@@ -2,6 +2,48 @@ package com.service;
 
 import org.springframework.stereotype.Service;
 
+import java.sql.*;
+import java.util.HashMap;
+import java.util.*;
+
+
 @Service
 public class SQLInterpreter {
+    public Map<String, Object> getData(String query) {
+        HashMap<String, Object> response = new HashMap<>();
+        try {
+            Connection conn = DBUtil.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int count = rsmd.getColumnCount();
+            response.put("status", "OK");
+            List<String> result = new ArrayList<>();
+            StringBuffer column = new StringBuffer();
+            for(int i=1; i<=count; i++){
+                String name = rsmd.getColumnName(i);
+                column.append(name+" ");
+
+            }
+            result.add(column.toString());
+            while(rs.next())
+            {
+                StringBuffer current = new StringBuffer();
+                for(int i=1; i<=count; i++){
+                    String name = rsmd.getColumnName(i);
+                    String cur = rs.getString(name);
+                    current.append(cur+" ");
+
+                }
+                result.add(current.toString());
+            }
+            response.put("result",result);
+
+        } catch (SQLException e) {
+            DBUtil.processException(e);
+            response.put("status", "ERROR");
+            response.put("result", null);
+        }
+        return  response;
+    }
 }
