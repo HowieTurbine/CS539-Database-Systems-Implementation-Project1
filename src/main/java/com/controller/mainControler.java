@@ -21,18 +21,12 @@ public class mainControler {
     {
         return new SQLInterpreter().getData(query);
     }
-    //TODO
-    //input SQL query and get the response
-    @ResponseBody
-    @RequestMapping(value = "/test")
+
+    @RequestMapping(value = "/main")
     public String test()
     {
-        return "Hello World";
+        return "homePage";
     }
 
-    @RequestMapping("/test1")
-    public String asd(){
-        return "adi";
-    }
 
 }
