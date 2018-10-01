@@ -1,59 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-    $(document).ready(function() {
-        const Url='http://localhost:8080/' ;
-        $('#run').click(function() {
-            $.ajax({
-                url: Url,
-                type: "GET",
-                success: function(result){
-                    console.log(result)
-                },
-                error:function(error) {
-                    console.log('Error ${error}')
-                }
-            })
-        })
-
-
-    })
-</script>
-<style>
-    .db {text-align: center;
-    }
-    #Query {
-        height: 250px;
-        width: 100%;
-    }
-    #run{
-        width: 100px;
-        margin-right: 1050px;
-        margin-bottom: 4px;
-        margin-top: 4px;
-    }
-    #result {
-        height: 250px;
-        width: 100%;
-        background-color: darkgray;
-    }
-</style>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Web Application</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#run').click(function(){
+                console.log("HERE");
+                $.ajax({
+                    url: "./query",
+                    type: 'POST',
+                    data:{
+                      query: $('#Query').val()
+                    },
+                    dataType: 'json',
+                    success: function (data){
+                      $('#result').empty().append(data.result)
+                    },
+                    error: function (request, error) {
+                        alert("Request: " + JSON.stringify(request));
+                    },
+                })})});
+    </script>
+    <style>
+        .db {text-align: center;
+        }
+        #Query {
+            height: 250px;
+            width: 100%;
+        }
+        #run{
+            width: 100px;
+            margin-right: 1050px;
+            margin-bottom: 4px;
+            margin-top: 4px;
+        }
+        #result {
+            height: 250px;
+            width: 100%;
+            background-color: darkgray;
+        }
+    </style>
 </head>
 <body>
 <div class="db">
     <input type="radio" value="MySQL" id="db1" name="db" checked>MySQL
     <input type="radio" value="Redshift" id="db2" name="db">Redshift<br>
 </div>
-Query : <br>
+<p>Query : <br></p>
 <input type="text" value= " " id="Query"><br>
 <input type="submit" value="Run" id="run">
 <input type="time" id="te">Time Elapsed<br>
-<input type="text" value= " " id="result"><br>
-</form>
-
+<div id="result" ><br></div>
 
 </body>
 </html>
