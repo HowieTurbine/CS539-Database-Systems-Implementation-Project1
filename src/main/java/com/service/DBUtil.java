@@ -22,10 +22,11 @@ public class DBUtil {
 
     }
 
-    public static void processException(SQLException e) {
+    public static String processException(SQLException e) {
         System.err.println("Error message: " + e.getMessage());
         System.err.println("Error code: " + e.getErrorCode());
         System.err.println("SQL state: " + e.getSQLState());
+        return ("Error message: " + e.getMessage()+" "+"Error code: " + e.getErrorCode()+" "+"SQL state: " + e.getSQLState());
     }
 
 }
