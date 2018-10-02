@@ -11,10 +11,13 @@ import java.util.*;
 public class SQLInterpreter {
     public Map<String, Object> getData(String query) {
         HashMap<String, Object> response = new HashMap<>();
+        double start,end;
+        start = System.currentTimeMillis();
         try {
             Connection conn = DBUtil.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
+            end = System.currentTimeMillis();
             ResultSetMetaData rsmd = rs.getMetaData();
             int count = rsmd.getColumnCount();
             response.put("status", "OK");
@@ -38,11 +41,14 @@ public class SQLInterpreter {
                 result.add(current.toString());
             }
             response.put("result",result);
+            response.put("time",(end-start)/1000);
 
         } catch (SQLException e) {
-            DBUtil.processException(e);
+            end = System.currentTimeMillis();
+            String errorMessage = DBUtil.processException(e);
             response.put("status", "ERROR");
-            response.put("result", null);
+            response.put("result", errorMessage);
+            response.put("time",(end-start)/1000);
         }
         return  response;
     }

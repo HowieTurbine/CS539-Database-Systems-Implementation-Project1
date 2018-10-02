@@ -17,6 +17,7 @@
                     dataType: 'json',
                     success: function (data){
                       $('#result').empty().append(data.result)
+                        $('#te').val(data.time+"s")
                     },
                     error: function (request, error) {
                         alert("Request: " + JSON.stringify(request));
@@ -51,7 +52,7 @@
 <p>Query : <br></p>
 <input type="text" value= " " id="Query"><br>
 <input type="submit" value="Run" id="run">
-<input type="time" id="te">Time Elapsed<br>
+<input type="text" id="te" readonly>Time Elapsed<br>
 <div id="result" ><br></div>
 
 </body>
