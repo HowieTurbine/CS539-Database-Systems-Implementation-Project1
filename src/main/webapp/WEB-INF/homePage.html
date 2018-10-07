@@ -12,12 +12,17 @@
                     url: "./query",
                     type: 'POST',
                     data:{
-                      query: $('#Query').val()
+                      query: $('#Query').val(),
+                      type: "MySQL"
                     },
                     dataType: 'json',
                     success: function (data){
-                      $('#result').empty().append(data.result)
-                        $('#te').val(data.time+"s")
+                        $.each(data, function(index, row){
+                            $.each(row, function(idx, val){
+                                $('#result').append("<br/>" + val + "<br/>");
+                        })});
+                      //$('#result').empty().append(data.result);
+                        $('#te').val(data.time+"s");
                     },
                     error: function (request, error) {
                         alert("Request: " + JSON.stringify(request));
