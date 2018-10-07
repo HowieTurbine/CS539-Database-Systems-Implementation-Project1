@@ -2,6 +2,7 @@ package com.service;
 
 import org.springframework.stereotype.Service;
 
+import javax.naming.Name;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.*;
@@ -34,25 +35,23 @@ public class SQLInterpreter {
             ResultSetMetaData rsmd = rs.getMetaData();
             int count = rsmd.getColumnCount();
             response.put("status", "OK");
-            List<String> result = new ArrayList<>();
-            StringBuilder column = new StringBuilder();
+            List<List<String>> TotalResult = new ArrayList<>();
+            List<String> NameCol = new ArrayList<>();
             for (int i = 1; i <= count; i++) {
                 String name = rsmd.getColumnName(i);
-                column.append(name + " ");
-
+                NameCol.add(name);
             }
-            result.add(column.toString());
+            TotalResult.add(NameCol);
             while (rs.next()) {
-                StringBuffer current = new StringBuffer();
+                List<String> DataCol = new ArrayList<>();
                 for (int i = 1; i <= count; i++) {
                     String name = rsmd.getColumnName(i);
                     String cur = rs.getString(name);
-                    current.append(cur + " ");
-
+                    DataCol.add(cur);
                 }
-                result.add(current.toString());
+                TotalResult.add(DataCol);
             }
-            response.put("result", result);
+            response.put("result", TotalResult);
             response.put("time", (end - start) / 1000);
 
         } catch (SQLException e) {
