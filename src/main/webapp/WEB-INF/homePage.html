@@ -7,27 +7,27 @@
     <script>
         $(document).ready(function(){
             $('#run').click(function(){
-                console.log("HERE");
                 $.ajax({
                     url: "./query",
                     type: 'POST',
                     data:{
                       query: $('#Query').val(),
-                      type: "MySQL"
+                      type: $('input:radio[name=dbButton]:checked').val(),
                     },
                     dataType: 'json',
                     success: function (data){
-                        $.each(data, function(index, row){
-                            $.each(row, function(idx, val){
-                                $('#result').append("<br/>" + val + "<br/>");
-                        })});
-                      //$('#result').empty().append(data.result);
                         $('#te').val(data.time+"s");
+                        $.each(data.result, function(index, row){
+                            $('#result').append("<br/>" + row + "<br/>");
+                        });
                     },
                     error: function (request, error) {
                         alert("Request: " + JSON.stringify(request));
                     },
                 })})});
+        function refreshPage(){
+            window.location.reload(true);
+        }
     </script>
     <style>
         .db {text-align: center;
@@ -43,20 +43,21 @@
             margin-top: 4px;
         }
         #result {
-            height: 250px;
+            height: 100%;
             width: 100%;
-            background-color: darkgray;
+            border: solid;
         }
     </style>
 </head>
 <body>
 <div class="db">
-    <input type="radio" value="MySQL" id="db1" name="db" checked>MySQL
-    <input type="radio" value="Redshift" id="db2" name="db">Redshift<br>
+    <input type="radio" value="MySQL" id="db1" name="dbButton">MySQL
+    <input type="radio" value="Redshift" id="db2" name="dbButton">Redshift<br>
 </div>
 <p>Query : <br></p>
 <input type="text" value= " " id="Query"><br>
-<input type="submit" value="Run" id="run">
+<input type="submit" value="Run" id="run" style="float: left;" >
+<input type="submit" value="Clear" id="clear" onclick="refreshPage()" style="float:left;">
 <input type="text" id="te" readonly>Time Elapsed<br>
 <div id="result" ><br></div>
 
